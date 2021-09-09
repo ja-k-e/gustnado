@@ -1,159 +1,82 @@
 const data = getData();
-const table = document.getElementById("table");
-const thead = document.getElementById("thead");
-const tbody = document.getElementById("tbody");
+const container = document.getElementById("container");
 
-const labels = {
-  player: "Player",
-  games: "G",
-  single: "1B",
-  double: "2B",
-  triple: "3B",
-  homer: "HR",
-  walk: "BB",
-  score: "R",
-  ab: "AB",
-  out: "Out",
-  rbi: "RBI",
-  avg: "Avg",
-  obp: "OBP",
-};
-const sortables = [
-  "single",
-  "double",
-  "triple",
-  "homer",
-  "walk",
-  "score",
-  "ab",
-  "out",
-  "rbi",
-];
+const plural = (string, number) => `${string}${number > 1 ? "s" : ""}`;
 
-const labelKeys = Object.keys(labels);
-
-const theadtr = document.createElement("tr");
-thead.appendChild(theadtr);
-labelKeys.forEach((value) => {
-  const th = document.createElement("th");
-  th.innerText = labels[value];
-  th.addEventListener("click", () =>
-    table.style.setProperty("--sort", `var(--sort-${value})`)
-  );
-  theadtr.appendChild(th);
-});
-
-data.forEach((player, i) => {
+data.forEach((player) => {
   if (player.player) {
-    const tr = document.createElement("tr");
-    tbody.appendChild(tr);
-
     const hits = player.single + player.double + player.triple + player.homer;
     player.avg = (hits / (player.ab - player.walk)).toFixed(3);
-    player.obp = ((hits + player.walk) / player.ab).toFixed(3);
-
-    tr.style.setProperty("--sort-player", i);
-    tr.style.setProperty(
-      "--sort-avg",
-      Math.round(parseFloat(player.avg) * 1000)
-    );
-    tr.style.setProperty(
-      "--sort-obp",
-      Math.round(parseFloat(player.obp) * 1000)
-    );
-    sortables.forEach((sortable) => {
-      tr.style.setProperty(`--sort-${sortable}`, player[sortable]);
-    });
-    labelKeys.forEach((key) => {
-      const td = document.createElement("td");
-      td.innerText = player[key];
-      tr.appendChild(td);
-    });
+    player.obp = (((hits + player.walk) / player.ab) * 100).toFixed(1);
+    player.bags =
+      player.single + player.double * 2 + player.triple * 3 + player.homer * 4;
+    player.slug = (player.bags / (player.ab - player.walk)).toFixed(3);
+    createSection(player);
   }
 });
+
+function createSection({
+  player,
+  games,
+  single,
+  double,
+  triple,
+  homer,
+  walk,
+  score,
+  ab,
+  out,
+  bags,
+  slug,
+  rbi,
+  avg,
+  obp,
+}) {
+  const section = document.createElement("section");
+  const li = (start, end) => `<li><strong>${start}&nbsp;${end}</strong></li>`;
+  const conditionalLi = (stat, word, pluralize = true) =>
+    stat ? li(stat, `${pluralize ? plural(word, stat) : word}`) : "";
+  section.innerHTML = `
+    <h3>${player}</h3>
+    <div class="stats">
+      <ul>
+        <li class="double-line"></li>
+        <li><strong>${avg}&nbsp;AVG</strong></li>
+        <li><strong>${slug}&nbsp;SLG</strong></li>
+        <li><strong>${obp}%&nbsp;OBP</strong></li>
+        ${homer || triple || double || single ? '<li class="line"></li>' : ""}
+        ${conditionalLi(homer, "dinger")}
+        ${conditionalLi(triple, "triple")}
+        ${conditionalLi(double, "double")}
+        ${conditionalLi(single, "single")}
+        ${rbi || score || bags ? '<li class="line"></li>' : ""}
+        ${conditionalLi(rbi, "RBI", false)}
+        ${conditionalLi(score, "run")}
+        ${conditionalLi(bags, "base")}
+        </ul>
+      <ul></ul>
+    </div>
+  `;
+  container.appendChild(section);
+}
 
 function getData() {
   return [
     {
-      player: "Albaugh, Jake",
+      player: "Bryan",
       games: 1,
-      single: 2,
-      double: 1,
-      triple: 1,
-      homer: 0,
-      walk: 0,
-      ab: 4,
-      out: 0,
-      rbi: 7,
-      score: 1,
-    },
-    {
-      player: "Davenport, Paul",
-      games: 1,
-      single: 3,
+      single: 0,
       double: 0,
       triple: 0,
       homer: 0,
       walk: 0,
-      ab: 4,
-      out: 1,
-      rbi: 0,
-      score: 1,
-    },
-    {
-      player: "Doran, Travis",
-      games: 1,
-      single: 2,
-      double: 2,
-      triple: 0,
-      homer: 0,
-      walk: 0,
-      ab: 4,
-      out: 0,
-      rbi: 2,
-      score: 4,
-    },
-    {
-      player: "Eddinger, Geoffrey",
-      games: 1,
-      single: 2,
-      double: 0,
-      triple: 0,
-      homer: 0,
-      walk: 0,
-      ab: 4,
-      out: 2,
-      rbi: 1,
-      score: 1,
-    },
-    {
-      player: "Ernst, John",
-      games: 1,
-      single: 2,
-      double: 0,
-      triple: 0,
-      homer: 0,
-      walk: 0,
-      ab: 4,
-      out: 2,
+      ab: 3,
+      out: 3,
       rbi: 0,
       score: 0,
     },
     {
-      player: "Hoffner, Jonny",
-      games: 1,
-      single: 1,
-      double: 0,
-      triple: 0,
-      homer: 0,
-      walk: 1,
-      ab: 4,
-      out: 2,
-      rbi: 0,
-      score: 2,
-    },
-    {
-      player: "Skjervem, Cory",
+      player: "Cory",
       games: 1,
       single: 1,
       double: 0,
@@ -166,7 +89,7 @@ function getData() {
       score: 1,
     },
     {
-      player: "Skjervem, Erik",
+      player: "Erik",
       games: 1,
       single: 0,
       double: 0,
@@ -179,20 +102,59 @@ function getData() {
       score: 0,
     },
     {
-      player: "Weinstein, Bryan",
+      player: "Geoff",
       games: 1,
-      single: 0,
+      single: 2,
       double: 0,
       triple: 0,
       homer: 0,
       walk: 0,
-      ab: 3,
-      out: 3,
+      ab: 4,
+      out: 2,
+      rbi: 1,
+      score: 1,
+    },
+    {
+      player: "Jake",
+      games: 1,
+      single: 2,
+      double: 1,
+      triple: 1,
+      homer: 0,
+      walk: 0,
+      ab: 4,
+      out: 0,
+      rbi: 7,
+      score: 1,
+    },
+    {
+      player: "John",
+      games: 1,
+      single: 2,
+      double: 0,
+      triple: 0,
+      homer: 0,
+      walk: 0,
+      ab: 4,
+      out: 2,
       rbi: 0,
       score: 0,
     },
     {
-      player: "Winzenried, Matt",
+      player: "Jonny",
+      games: 1,
+      single: 1,
+      double: 0,
+      triple: 0,
+      homer: 0,
+      walk: 1,
+      ab: 4,
+      out: 2,
+      rbi: 0,
+      score: 2,
+    },
+    {
+      player: "Matt",
       games: 1,
       single: 2,
       double: 1,
@@ -203,6 +165,32 @@ function getData() {
       out: 3,
       rbi: 0,
       score: 1,
+    },
+    {
+      player: "Paul",
+      games: 1,
+      single: 3,
+      double: 0,
+      triple: 0,
+      homer: 0,
+      walk: 0,
+      ab: 4,
+      out: 1,
+      rbi: 0,
+      score: 1,
+    },
+    {
+      player: "Travis",
+      games: 1,
+      single: 2,
+      double: 2,
+      triple: 0,
+      homer: 0,
+      walk: 0,
+      ab: 4,
+      out: 0,
+      rbi: 2,
+      score: 4,
     },
     {
       player: "",

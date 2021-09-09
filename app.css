@@ -1,64 +1,134 @@
 body {
-  --font-size-base: 0.6rem;
+  --skew: -10deg;
+  font-size: 1rem;
   background: black;
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
-@media (min-width: 600px) {
-  body {
-    --font-size-base: 1rem;
-  }
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1;
 }
 
 h1 {
-  font-size: calc(var(--font-size-base) * 4);
+  font-size: 3em;
   margin-bottom: 0;
   margin-top: 1em;
 }
 
+h1,
 h2 {
-  font-size: calc(var(--font-size-base) * 1.4);
-  margin-bottom: 2em;
-  margin-top: 0;
+  transform: skewY(var(--skew));
+  transform-origin: 0 0;
 }
 
+h2 {
+  font-size: 1.4em;
+  margin-bottom: 1em;
+  margin-top: 0;
+  padding-left: 0.25em;
+}
+
+h3 {
+  font-size: 2em;
+  margin-bottom: 0;
+  margin-top: 1em;
+}
+
+ul {
+  font-size: 1.3em;
+  line-height: 1;
+}
+
+@media (min-width: 600px) {
+  body {
+    font-size: 1.2rem;
+  }
+
+  h1 {
+    font-size: 4em;
+  }
+
+  h3 {
+    font-size: 3em;
+  }
+}
+
+@media (min-width: 1000px) {
+  body {
+    font-size: 1.4rem;
+  }
+
+  h1 {
+    font-size: 5em;
+  }
+}
+
+header,
 main {
   margin: 0 auto;
-  max-width: 900px;
+  max-width: 60em;
   width: 95%;
 }
 
-main table {
+div#container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -1em;
+}
+
+div#container section {
+  margin: 1em;
+  transform-origin: 0 0;
+  transform: skewY(var(--skew));
+  transition: transform 100ms ease-in-out;
+  width: calc(50% - 2em);
+}
+
+@media (min-width: 600px) {
+  div#container section {
+    width: calc(33.333% - 2em);
+  }
+}
+
+@media (min-width: 1024px) {
+  div#container section {
+    max-width: 10em;
+    width: calc(25% - 2em);
+  }
+}
+
+section div.stats {
   width: 100%;
 }
 
-main table th,
-main table td {
-  font-size: calc(var(--font-size-base) * 1.4);
-  text-align: center;
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-main table th:first-child,
-main table td:first-child {
-  text-align: left;
-}
-main table th:last-child,
-main table td:last-child {
-  text-align: right;
+ul li {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
 }
 
-main table th {
-  padding: 0.5rem 0;
+ul li.line {
+  border-bottom: 0.125em solid;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.5em;
 }
-
-main table td {
-  padding: 0.25rem;
-}
-
-main tbody tr:nth-child(odd) td {
-  background: rgba(255, 255, 255, 0.1);
-}
-main tbody tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.05);
+ul li.double-line {
+  border-bottom: 0.125em solid;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.0625em;
+  border-top: 0.125em solid;
+  margin-top: 0.5em;
+  padding-top: 0.0625em;
 }
