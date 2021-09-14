@@ -121,7 +121,7 @@ function createSection({
         ${li(`${pobabs}/${pobab}`, "keep")}
         ${pobm ? li(pobm, "POBM") : ""}
         ${li(abro, "ABRO", true)}
-        ${li(ie, "inning KO")}
+        ${li(ie, "IKO", true)}
       </ul>
     </div>
   `;
