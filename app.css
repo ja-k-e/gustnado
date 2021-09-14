@@ -125,14 +125,9 @@ ul {
   padding: 0;
 }
 
-ul li {
-  /* text-transform: uppercase; */
-}
-
 ul li strong {
   align-items: center;
   display: flex;
-  /* justify-content: space-between; */
 }
 
 ul li.line {

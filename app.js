@@ -1,7 +1,8 @@
 const data = getData();
 const container = document.getElementById("container");
 
-const plural = (string, number) => `${string}${number === 1 ? "" : "s"}`;
+const plural = (string, number) =>
+  `${string}${parseInt(number) === 1 ? "" : "s"}`;
 
 data.forEach((playerData) => {
   const {
