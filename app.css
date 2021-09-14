@@ -105,20 +105,6 @@ section div.stats {
   width: 100%;
 }
 
-strike {
-  position: relative;
-  text-decoration: none;
-}
-strike::after {
-  border-bottom: 0.125em solid;
-  content: "";
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 60%;
-  transform: translateY(-50%);
-}
-
 ul {
   list-style: none;
   margin: 0;
