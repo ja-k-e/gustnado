@@ -22,7 +22,7 @@ data.forEach((playerData) => {
     sio, // start it off
     sior, // start it off right
     pob, // players on base
-    pobm, // players on base moved
+    adv, // advanced players
     g,
   } = playerData;
   if (player) {
@@ -35,8 +35,8 @@ data.forEach((playerData) => {
     playerData.bags = h1 + h2 * 2 + h3 * 3 + hr * 4;
     // slugging %
     playerData.slug = (playerData.bags / (ab - bb)).toFixed(3);
-    // players on base moved rate
-    playerData.pobmr = `${Math.round((pobm / (pob || 1)) * 100)}%`;
+    // players advanced rate
+    playerData.advr = `${Math.round((adv / (pob || 1)) * 100)}%`;
     // start it off right rate
     playerData.siorr = `${Math.round((sior / (sio || 1)) * 100)}%`;
     // total outs per plate appearance
@@ -75,9 +75,10 @@ function createSection({
   obp,
   opg,
   player,
+  pob,
   pobab,
   pobabs,
-  pobm,
+  adv,
   rbi,
   rbipg,
   s,
@@ -106,8 +107,9 @@ function createSection({
         ${h1 ? li(h1, "single", true) : ""}
         ${rbi || s || bags ? '<li class="line"></li>' : ""}
         ${rbi ? li(rbi, "RBI", true) : ""}
-        ${s ? li(s, "run", true, "scored") : ""}
+        ${adv ? li(adv, "advanced") : ""}
         ${bags ? li(bags, "total bag", true) : ""}
+        ${s ? li(s, "run", true, "scored") : ""}
         <li class="line"></li>
         <li class="label"><strong><label>Per Game (${g})</label></strong></li>
         ${li(hpg, "hit", true)}
@@ -119,7 +121,6 @@ function createSection({
         <li class="label"><strong><label>Momentum (${ab})</label></strong></li>
         ${li(`${siorab}/${sioab}`, "lead")}
         ${li(`${pobabs}/${pobab}`, "keep")}
-        ${pobm ? li(pobm, "POBM") : ""}
         ${li(abro, "ABRO", true)}
         ${li(ie, "IKO", true)}
       </ul>
@@ -149,7 +150,7 @@ function getData() {
       pobab: 2,
       pobabs: 0,
       pob: 5,
-      pobm: 0,
+      adv: 0,
       g: 1,
     },
     {
@@ -171,7 +172,7 @@ function getData() {
       pobab: 3,
       pobabs: 2,
       pob: 5,
-      pobm: 3,
+      adv: 3,
       g: 1,
     },
     {
@@ -193,7 +194,7 @@ function getData() {
       pobab: 4,
       pobabs: 0,
       pob: 6,
-      pobm: 0,
+      adv: 0,
       g: 1,
     },
     {
@@ -215,7 +216,7 @@ function getData() {
       pobab: 2,
       pobabs: 1,
       pob: 2,
-      pobm: 1,
+      adv: 1,
       g: 1,
     },
     {
@@ -237,7 +238,7 @@ function getData() {
       pobab: 4,
       pobabs: 4,
       pob: 9,
-      pobm: 9,
+      adv: 9,
       g: 1,
     },
     {
@@ -259,7 +260,7 @@ function getData() {
       pobab: 3,
       pobabs: 1,
       pob: 5,
-      pobm: 1,
+      adv: 1,
       g: 1,
     },
     {
@@ -281,7 +282,7 @@ function getData() {
       pobab: 1,
       pobabs: 0,
       pob: 6,
-      pobm: 3,
+      adv: 3,
       g: 1,
     },
     {
@@ -303,7 +304,7 @@ function getData() {
       pobab: 2,
       pobabs: 2,
       pob: 2,
-      pobm: 2,
+      adv: 2,
       g: 1,
     },
     {
@@ -325,7 +326,7 @@ function getData() {
       pobab: 4,
       pobabs: 4,
       pob: 5,
-      pobm: 5,
+      adv: 5,
       g: 1,
     },
     {
@@ -347,7 +348,7 @@ function getData() {
       pobab: 2,
       pobabs: 2,
       pob: 4,
-      pobm: 4,
+      adv: 4,
       g: 1,
     },
   ];
