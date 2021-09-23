@@ -21,7 +21,7 @@ DATA.forEach((playerData) => {
     sior, // start it off right
     pob, // players on base
     adv, // advanced players
-    g,
+    g, // games
   } = playerData;
   if (player) {
     const hits = h1 + h2 + h3 + hr;
@@ -35,6 +35,8 @@ DATA.forEach((playerData) => {
     playerData.slug = (playerData.bags / (ab - bb)).toFixed(3);
     // players advanced rate
     playerData.advr = `${Math.round((adv / (pob || 1)) * 100)}%`;
+    // player on base score rate
+    playerData.pobs = `${Math.round((rbi / (pob || 1)) * 100)}%`;
     // start it off right rate
     playerData.siorr = `${Math.round((sior / (sio || 1)) * 100)}%`;
     // total outs per plate appearance
@@ -74,6 +76,7 @@ function createSection({
   opg,
   player,
   pob,
+  pobs,
   pobab,
   pobabs,
   adv,
@@ -98,6 +101,7 @@ function createSection({
         ${li(avg, "AVG")}
         ${li(slug, "SLG")}
         ${li(`${obp}%`, "OBP")}
+        ${li(pobs, "POBS")}
         ${bags ? '<li class="line"></li>' : ""}
         ${hr ? li(hr, "dinger", true) : ""}
         ${h3 ? li(h3, "triple", true) : ""}
