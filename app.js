@@ -2,134 +2,62 @@ const container = document.getElementById("container");
 const plural = (string, number) =>
   `${string}${parseInt(number) === 1 ? "" : "s"}`;
 
-DATA.forEach((playerData) => {
-  const {
-    player, // name
-    h1, // singles
-    h2, // doubles
-    h3, // triples
-    hr, // homers
-    bb, // walks
-    ab, // plate appearances
-    abo, // plate appearance outs
-    abro, // plate appearances that resulted in outs
-    o, // total outs
-    rbi, // runs batted in
-    s, // scores
-    ie, // innings ended
-    sio, // start it off
-    sior, // start it off right
-    pob, // players on base
-    adv, // advanced players
-    g, // games
-  } = playerData;
-  if (player) {
-    const hits = h1 + h2 + h3 + hr;
-    // batting average (hits / at bats)
-    playerData.avg = (hits / (ab - bb)).toFixed(3);
-    // on base percentage (on base / plate appearances)
-    playerData.obp = (((hits + bb) / ab) * 100).toFixed(1);
-    // total bases
-    playerData.bags = h1 + h2 * 2 + h3 * 3 + hr * 4;
-    // slugging %
-    playerData.slug = (playerData.bags / (ab - bb)).toFixed(3);
-    // players advanced rate
-    playerData.advr = `${Math.round((adv / (pob || 1)) * 100)}%`;
-    // player on base score rate
-    playerData.pobs = `${Math.round((rbi / (pob || 1)) * 100)}%`;
-    // ab results in out rate
-    playerData.abror = `${Math.round((abro / ab) * 100)}%`;
-    // start it off right rate
-    playerData.siorr = `${Math.round((sior / (sio || 1)) * 100)}%`;
-    // total outs per plate appearance
-    playerData.outr = `${Math.round((o / ab) * 100)}%`;
-    // scores per gam
-    playerData.spg = (s / g).toFixed(1);
-    // at bat outs per game
-    playerData.opg = (abo / g).toFixed(1);
-    // bags per game
-    playerData.bpg = (playerData.bags / g).toFixed(1);
-    // hits per game
-    playerData.hpg = (hits / g).toFixed(1);
-    // rbis per game
-    playerData.rbipg = (rbi / g).toFixed(1);
-    // innings ended per game
-    playerData.iepg = (ie / g).toFixed(1);
-    createSection(playerData);
-  }
-});
+DATA.forEach(createSection);
 
-function createSection({
-  ab,
-  abo,
-  abro,
-  abror,
-  avg,
-  advr,
-  bags,
-  bpg,
-  g,
-  h1,
-  h2,
-  h3,
-  hpg,
-  hr,
-  ie,
-  iepg,
-  obp,
-  opg,
-  player,
-  pob,
-  pobs,
-  pobab,
-  pobabs,
-  adv,
-  rbi,
-  rbipg,
-  s,
-  sioab,
-  siorab,
-  slug,
-  spg,
-}) {
+function createSection(data) {
   const section = document.createElement("section");
   const li = (stat, word, pluralize = false, extra = "") =>
     `<li><strong>${stat}&nbsp;<label>${
       pluralize ? plural(word, stat) : word
     }&nbsp;${extra}</label></strong></li>`;
+
   section.innerHTML = `
-    <h3>${player}</h3>
+    <h3>${data.Player.replace("(S)", "<sup>S</sup>")}</h3>
     <div class="stats">
       <ul>
         <li class="double-line"></li>
-        ${li(avg, "AVG")}
-        ${li(slug, "SLG")}
-        ${li(`${obp}%`, "OBP")}
-        ${bags ? '<li class="line"></li>' : ""}
-        ${hr ? li(hr, "dinger", true) : ""}
-        ${h3 ? li(h3, "triple", true) : ""}
-        ${h2 ? li(h2, "double", true) : ""}
-        ${h1 ? li(h1, "single", true) : ""}
-        ${rbi || s || bags ? '<li class="line"></li>' : ""}
-        ${rbi ? li(rbi, "RBI", true) : ""}
-        ${adv ? li(adv, "advanced") : ""}
-        ${bags ? li(bags, "total bag", true) : ""}
-        ${s ? li(s, "run", true, "scored") : ""}
+        ${li(data.AVG.toFixed(3), "AVG")}
+        ${li(data.SLG.toFixed(3), "SLG")}
+        ${li(`${Math.round(data.OBP * 100)}%`, "OBP")}
+        ${data.Bags ? '<li class="line"></li>' : ""}
+        ${data.HR ? li(data.HR, "homer", true) : ""}
+        ${data.H3 ? li(data.H3, "triple", true) : ""}
+        ${data.H2 ? li(data.H2, "double", true) : ""}
+        ${data.H1 ? li(data.H1, "single", true) : ""}
+        ${data.RBI || data.S || data.Bags ? '<li class="line"></li>' : ""}
+        ${data.RBI ? li(data.RBI, "RBI", true) : ""}
+        ${data.ADV ? li(data.ADV, "advanced") : ""}
+        ${data.Bags ? li(data.Bags, "total bag", true) : ""}
+        ${data.S ? li(data.S, "run", true, "scored") : ""}
         <li class="line"></li>
-        <li class="label"><strong><label>Per Game (${g})</label></strong></li>
-        ${li(hpg, "hit", true)}
-        ${li(rbipg, "RBI", true)}
-        ${li(bpg, "bag", true)}
-        ${li(spg, "score", true)}
-        ${li(opg, "out", true)}
+        <li class="label"><strong><label>Per Game (${
+          data.G
+        })</label></strong></li>
+        ${li(data.HPG, "hit", true)}
+        ${li(data.RBIPG, "RBI", true)}
+        ${li(data.BPG, "bag", true)}
+        ${li(data.SPG, "score", true)}
+        ${li(data.OPG, "out", true)}
         <li class="line"></li>
-        <li class="label"><strong><label>Momentum (${ab})</label></strong></li>
-        ${li(`${siorab}/${sioab}`, "lead")}
-        ${li(`${pobabs}/${pobab}`, "keep")}
-        ${li(advr, "POBA")}
-        ${li(pobs, "POBS")}
-        ${li(abror, "ABRO")}
-        ${li(ie, "IKO", true)}
+        <li class="label"><strong><label>Momentum (${
+          data.PA
+        })</label></strong></li>
+        ${li(
+          `${Math.round(data.MLRate * 100)}%`,
+          "Lead",
+          false,
+          `${data.NOBPA}`
+        )}
+        ${li(
+          `${Math.round(data.MKRate * 100)}%`,
+          "Keep",
+          false,
+          `${data.POBPA}`
+        )}
+        ${li(`${Math.round(data.ADVRate * 100)}%`, "ADV")}
+        ${li(`${Math.round(data.RBIRate * 100)}%`, "RBI")}
+        ${li(`${Math.round(data.PARORate * 100)}%`, "PARO")}
+        ${li(data.IKO, "IKO", true)}
       </ul>
     </div>
   `;
