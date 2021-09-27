@@ -217,7 +217,7 @@ tr td:first-child {
   z-index: 9;
 }
 
-tr:hover td,
+tr.active td,
 tr td.active {
   background: white;
   color: black;

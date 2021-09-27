@@ -117,20 +117,34 @@ function drawTableForPlayers() {
     tableBody.appendChild(tr);
     labels.forEach((label, i) => {
       const td = document.createElement("td");
-      if (label !== "Player") {
-        td.addEventListener("mouseenter", () => {
-          tableInfo.innerText = `${label}: ${LABELS[label]}`;
+      const onOn = () => {
+        td.setAttribute("data-on", "true");
+        tableInfo.innerText = `${label}: ${LABELS[label]}`;
+        tr.classList.add("active");
+        if (label !== "Player") {
           tableBody
             .querySelectorAll(`td:nth-child(${i + 1})`)
             .forEach((td) => td.classList.add("active"));
-        });
-        td.addEventListener("mouseleave", () => {
-          tableInfo.innerHTML = "&nbsp;";
-          tableBody
-            .querySelectorAll(`td:nth-child(${i + 1})`)
-            .forEach((td) => td.classList.remove("active"));
-        });
-      }
+        }
+      };
+      const onOff = () => {
+        td.removeAttribute("data-on");
+        tr.classList.remove("active");
+        tableInfo.innerHTML = "&nbsp;";
+        tableBody
+          .querySelectorAll(`td:nth-child(${i + 1})`)
+          .forEach((td) => td.classList.remove("active"));
+      };
+      td.addEventListener("click", () => {
+        if (td.getAttribute("data-on")) {
+          onOff();
+        } else {
+          onOn();
+        }
+      });
+      td.addEventListener("mouseenter", onOn);
+      td.addEventListener("mouseleave", onOff);
+
       const formatted = FORMATTERS[label]
         ? FORMATTERS[label](data[label])
         : data[label];
