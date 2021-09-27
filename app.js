@@ -118,7 +118,6 @@ function drawTableForPlayers() {
     labels.forEach((label, i) => {
       const td = document.createElement("td");
       const onOn = () => {
-        td.setAttribute("data-on", "true");
         tableInfo.innerText = `${label}: ${LABELS[label]}`;
         tr.classList.add("active");
         if (label !== "Player") {
@@ -128,7 +127,6 @@ function drawTableForPlayers() {
         }
       };
       const onOff = () => {
-        td.removeAttribute("data-on");
         tr.classList.remove("active");
         tableInfo.innerHTML = "&nbsp;";
         tableBody
@@ -136,11 +134,7 @@ function drawTableForPlayers() {
           .forEach((td) => td.classList.remove("active"));
       };
       td.addEventListener("click", () => {
-        if (td.getAttribute("data-on")) {
-          onOff();
-        } else {
-          onOn();
-        }
+        onOn();
       });
       td.addEventListener("mouseenter", onOn);
       td.addEventListener("mouseleave", onOff);
