@@ -153,6 +153,7 @@ ul li.label {
   width: 100%;
 }
 #table-info {
+  font-size: 0.8em;
   font-weight: bold;
   left: 0;
   margin: 0.5em 0 0;
