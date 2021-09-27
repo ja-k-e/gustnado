@@ -1,3 +1,21 @@
+window.FORMATTERS = {
+  ADVRate: (n) => Math.round(n * 100),
+  RBIRate: (n) => Math.round(n * 100),
+  PARORate: (n) => Math.round(n * 100),
+  SIORRate: (n) => Math.round(n * 100),
+  OUTRate: (n) => Math.round(n * 100),
+  MLRate: (n) => Math.round(n * 100),
+  MKRate: (n) => Math.round(n * 100),
+  AVG: (n) => n.toFixed(3),
+  OBP: (n) => n.toFixed(3),
+  SLG: (n) => n.toFixed(3),
+  HPG: (n) => n.toFixed(1),
+  RBIPG: (n) => n.toFixed(1),
+  BPG: (n) => n.toFixed(1),
+  SPG: (n) => n.toFixed(1),
+  OPG: (n) => n.toFixed(1),
+};
+
 window.LABELS = {
   Player: "Player Name",
   H1: "Singles",
