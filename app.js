@@ -38,26 +38,6 @@ function createSection(data) {
         ${li(data.BPG, "bag", true)}
         ${li(data.SPG, "score", true)}
         ${li(data.OPG, "out", true)}
-        <li class="line"></li>
-        <li class="label"><strong><label>Momentum (${
-          data.PA
-        })</label></strong></li>
-        ${li(
-          `${Math.round(data.MLRate * 100)}%`,
-          "Lead",
-          false,
-          `${data.NOBPA}`
-        )}
-        ${li(
-          `${Math.round(data.MKRate * 100)}%`,
-          "Keep",
-          false,
-          `${data.POBPA}`
-        )}
-        ${li(`${Math.round(data.ADVRate * 100)}%`, "ADV")}
-        ${li(`${Math.round(data.RBIRate * 100)}%`, "RBI")}
-        ${li(`${Math.round(data.PARORate * 100)}%`, "PARO")}
-        ${li(data.IKO, "IKO", true)}
       </ul>
     </div>
   `;
